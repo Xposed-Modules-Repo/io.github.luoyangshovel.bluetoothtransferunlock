@@ -1,0 +1,1 @@
+Lifts Bluetooth's file-type limits in both directions and keeps the device discoverable without the pairing screen, and can add Bluetooth to every app's share sheet. Tick Bluetooth alone as the scope — `system` is only needed for the share sheet.
