@@ -23,9 +23,8 @@ The scope is pre-declared inside the APK and can still be ticked per entry in LS
 
 - `com.android.bluetooth` — all of features 1-3. **If you only want those three, this one entry is enough.**
 - `system` — the only switch for feature 4 (intent resolution runs in system_server). Leave it unticked if you don't need it.
-- Do not write `android`: a modern module's `scope.list` is read verbatim per line and the `android`↔`system` alias exists only for legacy `xposedscope`. Getting it wrong silently kills feature 4 while everything else keeps working.
 
-Restart: features 1-3 only need the Bluetooth process restarted (toggle Bluetooth off and on); **feature 4 requires a full reboot** — system_server does not reload the module just because the Bluetooth process restarted.
+Restart: features 1-3 only need the Bluetooth process restarted (force-stop the Bluetooth app); **feature 4 requires a full reboot** — system_server does not reload the module just because the Bluetooth process restarted.
 
 ## Diagnostics
 
