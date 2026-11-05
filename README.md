@@ -29,13 +29,13 @@ LSPosed 模块，现代 libxposed API（102）：没有 UI、没有设置页面�
 ## 诊断
 
 ```bash
-adb logcat -s BTUnlock
+adb logcat | grep BTUnlock   # 别用 -s BTUnlock：LSPosed 会把模块日志套在自己的标签里，整行只有内容含包名
 adb shell setprop log.tag.BTUnlock VERBOSE   # 要在目标进程启动前设置
 ```
 
 - `[com.android.bluetooth] hooks installed: receive=N, send=N, discoverable=N` / `[system_server] hooks installed: discoverable-fallback=N, share-sheet=M` —— 装没装上、装了几条，看这两行。
 - 面板里没有蓝牙：连 `[system_server]` 这行都没有 → 作用域缺 `system`（勾上重启整机）。
-- 搜不到：`asserted mode … (found 21, watchdog)` 每 5 s 刷不完 → 断言发出去了但协议栈不认；正常一个开机周期只出现一两次。
+- 搜不到：开机后应有一行 `discoverable: N through … is what this ROM takes for discoverable`，那是探测读回确认了编码；若 `asserted mode …` 反复出现并跟着每分钟一条 `discoverable: no encoding reached the stack …` → 三层写法都没把实时模式抬成 discoverable，这个 ROM 的 setter 换了名字或形状。
 
 ## 已知限制
 

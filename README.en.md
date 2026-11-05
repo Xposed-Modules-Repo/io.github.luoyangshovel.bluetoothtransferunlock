@@ -29,13 +29,13 @@ Restart: features 1-3 only need the Bluetooth process restarted; **feature 4 req
 ## Diagnostics
 
 ```bash
-adb logcat -s BTUnlock
+adb logcat | grep BTUnlock   # not -s BTUnlock: LSPosed re-emits module output under its own tag, only the text carries BTUnlock
 adb shell setprop log.tag.BTUnlock VERBOSE   # set this before the target process starts
 ```
 
 - `[com.android.bluetooth] hooks installed: receive=N, send=N, discoverable=N` and `[system_server] hooks installed: discoverable-fallback=N, share-sheet=M` — these two lines say what got installed.
 - No Bluetooth row in the sheet: no `[system_server]` line at all → the scope lacks `system` (tick it, then reboot).
-- Not discoverable: `asserted mode … (found 21, watchdog)` every 5 s without end means the assert goes out but the stack ignores it; normally it appears once or twice per boot.
+- Not discoverable: after a boot there should be one `discoverable: N through … is what this ROM takes for discoverable` line, which is the probe confirming the encoding. If `asserted mode …` keeps repeating with one `discoverable: no encoding reached the stack …` per minute → none of the three layers moved the live mode, so this ROM renamed or reshaped its setters.
 
 ## Known limitations
 
